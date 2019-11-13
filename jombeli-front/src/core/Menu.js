@@ -1,6 +1,7 @@
-import React,{Fragment} from "react";
+import React, { Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { signout , isAuthenticated} from "../auth";
+import { signout, isAuthenticated } from "../auth";
+import { itemTotal } from "./cartHelpers";
 
 const isActive = (history, path) => {
     if (history.location.pathname === path) {
@@ -20,6 +21,26 @@ const Menu = ({ history }) => (
                     to="/"
                 >
                     Home
+                </Link>
+            </li>
+
+            <li className="nav-item">
+                <Link
+                    className="nav-link"
+                    style={isActive(history, "/shop")}
+                    to="/shop"
+                >
+                    Shop
+                </Link>
+            </li>
+
+            <li className="nav-item">
+                <Link
+                    className="nav-link"
+                    style={isActive(history, "/cart")}
+                    to="/cart"
+                >
+                    Cart <sup><small className="cart-badge">{itemTotal()}</small></sup>
                 </Link>
             </li>
 
@@ -48,45 +69,43 @@ const Menu = ({ history }) => (
             )}
 
             {!isAuthenticated() && (
-              <Fragment>
-                <li className="nav-item">
-                <Link
-                    className="nav-link"
-                    style={isActive(history, "/signin")}
-                    to="/signin"
-                >
-                    Signin
-                </Link>
-            </li>
+                <Fragment>
+                    <li className="nav-item">
+                        <Link
+                            className="nav-link"
+                            style={isActive(history, "/signin")}
+                            to="/signin"
+                        >
+                            Signin
+                        </Link>
+                    </li>
 
-            <li className="nav-item">
-                <Link
-                    className="nav-link"
-                    style={isActive(history, "/signup")}
-                    to="/signup"
-                >
-                    Signup
-                </Link>
-            </li>
-              </Fragment>
+                    <li className="nav-item">
+                        <Link
+                            className="nav-link"
+                            style={isActive(history, "/signup")}
+                            to="/signup"
+                        >
+                            Signup
+                        </Link>
+                    </li>
+                </Fragment>
             )}
 
             {isAuthenticated() && (
-              <Fragment>
                 <li className="nav-item">
-                <Link
-                    className="nav-link"
-                    style={{ cursor: "pointer", color: "#ffffff" }}
-                    onClick={() =>
-                        signout(() => {
-                            history.push("/");
-                        })
-                    }
-                >
-                    Signout
-                </Link>
-            </li>
-              </Fragment>
+                    <span
+                        className="nav-link"
+                        style={{ cursor: "pointer", color: "#ffffff" }}
+                        onClick={() =>
+                            signout(() => {
+                                history.push("/");
+                            })
+                        }
+                    >
+                        Signout
+                    </span>
+                </li>
             )}
         </ul>
     </div>

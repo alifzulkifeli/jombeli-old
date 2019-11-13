@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const Dashboard = () => {
     const {
+        // eslint-disable-next-line
         user: { _id, name, email, role }
     } = isAuthenticated();
 
