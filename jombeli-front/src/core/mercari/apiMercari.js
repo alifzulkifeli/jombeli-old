@@ -1,8 +1,13 @@
+import { API } from "../../config";
 import React, { useState, useEffect } from "react";
-import { getCategories, list } from "./apiCore";
-import Card from "./Card";
+import { Link, Redirect } from 'react-router-dom';
+import ShowImage from '../ShowImage';
+import moment from 'moment';
+import Card from '../Card';
+import { addItem, updateItem, removeItem } from '../cartHelpers';
 
-const Search = () => {
+
+export const Search = () => {
     const [data, setData] = useState({
         categories: [],
         category: "",
@@ -11,21 +16,24 @@ const Search = () => {
         searched: false
     });
 
-    const { categories, category, search, results, searched } = data;
+    const {  category, search, results, searched } = data;
 
-    const loadCategories = () => {
-        getCategories().then(data => {
-            if (data.error) {
-                console.log(data.error);
-            } else {
-                setData({ ...data, categories: data });
-            }
-        });
-    };
+    
 
     useEffect(() => {
-        loadCategories();
+ 
     }, []);
+
+    const list = params => {
+      console.log("query", params);
+      return fetch(`${API}/mercari/search?page=1&min_price=6000&max_price=20000&search=microsoft surface`, {
+          method: "GET"
+      })
+          .then(response => {
+              return response.json();
+          })
+          .catch(err => console.log(err));
+    };
 
     const searchData = () => {
         // console.log(search, category);
@@ -82,20 +90,6 @@ const Search = () => {
         <form onSubmit={searchSubmit}>
             <span className="input-group-text">
                 <div className="input-group input-group-lg">
-                    <div className="input-group-prepend">
-                        <select
-                            className="btn mr-2"
-                            onChange={handleChange("category")}
-                        >
-                            <option value="All">All</option>
-                            {categories.map((c, i) => (
-                                <option key={i} value={c._id}>
-                                    {c.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
                     <input
                         type="search"
                         className="form-control"
@@ -123,4 +117,3 @@ const Search = () => {
     );
 };
 
-export default Search;

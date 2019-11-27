@@ -5,7 +5,7 @@ const {errorHandler} = require("../helpers/dbErrorHandler");
 
 
 exports.signup = (req, res) => {
-  // console.log("req.body", req.body);
+  console.log("req.body", req.body);
   const user = new User(req.body);
   user.save((error, user) =>{
     if (error) {
@@ -59,6 +59,7 @@ exports.requireSignin = expressJwt({
 });
 
 exports.isAuth = (req, res, next) => {
+  
   let user = req.profile && req.auth && req.profile._id == req.auth._id;
   if (!user){
     return res.status(403).json({

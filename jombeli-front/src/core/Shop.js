@@ -11,7 +11,9 @@ const Shop = () => {
         filters: { category: [], price: [] }
     });
     const [categories, setCategories] = useState([]);
+    // eslint-disable-next-line
     const [error, setError] = useState(false);
+    // eslint-disable-next-line
     const [limit, setLimit] = useState(6);
     const [skip, setSkip] = useState(0);
     const [size, setSize] = useState(0);
@@ -67,6 +69,7 @@ const Shop = () => {
 
     useEffect(() => {
         init();
+        // eslint-disable-next-line
         loadFilteredResults(skip, limit, myFilters.filters);
     }, []);
 
@@ -94,6 +97,7 @@ const Shop = () => {
         }
         return array;
     };
+    
 
     return (
         <Layout
