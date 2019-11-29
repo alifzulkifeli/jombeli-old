@@ -19,7 +19,7 @@ exports.productById = (req, res, next, id) => {
 };
 
 exports.read = (req, res) => {
-    req.product.photo = undefined;
+    req.product.photo = undefined;//can be deleted after setup image cddn
     return res.json(req.product);
 };
 
@@ -144,7 +144,7 @@ exports.update = (req, res) => {
 exports.list = (req, res) => {
     let order = req.query.order ? req.query.order : "asc";
     let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
-    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+    let limit = req.query.limit ? parseInt(req.query.limit) : 15;
 
     Product.find()
         .select("-photo")
@@ -167,7 +167,7 @@ exports.list = (req, res) => {
  */
 
 exports.listRelated = (req, res) => {
-    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+    let limit = req.query.limit ? parseInt(req.query.limit) : 15;
 
     Product.find({ _id: { $ne: req.product }, category: req.product.category })
         .limit(limit)
