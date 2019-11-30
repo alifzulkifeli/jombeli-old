@@ -31,6 +31,7 @@ const AddProduct = () => {
         shipping,
         quantity,
         loading,
+        image,
         error,
         createdProduct,
         redirectToProfile,
@@ -75,6 +76,7 @@ const AddProduct = () => {
                     name: '',
                     description: '',
                     photo: '',
+                    image: '',
                     price: '',
                     quantity: '',
                     loading: false,
@@ -92,7 +94,10 @@ const AddProduct = () => {
                     <input onChange={handleChange('photo')} type="file" name="photo" accept="image/*" />
                 </label>
             </div>
-
+            <div className="form-group">
+                <label className="text-muted">Image</label>
+                <input onChange={handleChange('image')} type="text" className="form-control" value={image} />
+            </div>
             <div className="form-group">
                 <label className="text-muted">Name</label>
                 <input onChange={handleChange('name')} type="text" className="form-control" value={name} />

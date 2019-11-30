@@ -2,10 +2,10 @@ import { API } from "../config";
 import React, { useState, useEffect } from "react";
 import { Link, Redirect } from 'react-router-dom';
 import Card from '../core/Card';
-import { addItem, updateItem, removeItem } from '../core/cartHelpers';
 
 
-export const Search = () => {
+
+export const M_Search = () => {
     const [data, setData] = useState({
         categories: [],
         category: "",

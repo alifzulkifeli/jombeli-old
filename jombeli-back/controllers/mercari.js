@@ -23,7 +23,7 @@ exports.listSearch = (req, res) => {
 
           const mercari_item = {
             name : $(el).find('.items-box-name').text(),
-            price : $(el).find('.items-box-price').text(),
+            price : parseInt($(el).find('.items-box-price').text().substr(1)) ,
             link : $(el).attr('href'),
             status : $(el).find('.item-sold-out-badge').text(),
             image : $(el).children().children().attr('data-src'),
@@ -33,5 +33,7 @@ exports.listSearch = (req, res) => {
         });
         res.json(item);
       });
+      
+      
 };
 

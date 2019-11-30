@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../core/Layout';
-import {Search} from './apiMercari';
+import {M_Search} from './apiMercari';
 
 const M_Product = () => {
-
-
     useEffect(() => {
        
     }, []);
@@ -15,7 +13,7 @@ const M_Product = () => {
             description="Get item directly from mercary.jp"
             className="container-fluid"
         >
-            <Search />
+            <M_Search />
            
         </Layout>
     );

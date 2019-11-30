@@ -35,6 +35,7 @@ exports.create = (req, res) => {
         // check for all fields
         const {
             name,
+            image,
             description,
             price,
             category,
@@ -46,6 +47,7 @@ exports.create = (req, res) => {
             !name ||
             !description ||
             !price ||
+            !image||
             !category ||
             !quantity ||
             !shipping

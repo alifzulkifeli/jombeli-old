@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema({
     type: String,
     trim: true,
     required: true,
-    maxlength: 32
+    maxlength: 64
   },
   description: {
     type: String,
@@ -36,6 +36,9 @@ const productSchema = new mongoose.Schema({
   photo: {
     data: Buffer,
     contentType: String
+  },
+  image: {
+    type: String
   },
   shipping: {
     required: false,
