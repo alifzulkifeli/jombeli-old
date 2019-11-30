@@ -1,10 +1,8 @@
-import { API } from "../../config";
+import { API } from "../config";
 import React, { useState, useEffect } from "react";
 import { Link, Redirect } from 'react-router-dom';
-import ShowImage from '../ShowImage';
-import moment from 'moment';
-import Card from '../Card';
-import { addItem, updateItem, removeItem } from '../cartHelpers';
+import Card from '../core/Card';
+import { addItem, updateItem, removeItem } from '../core/cartHelpers';
 
 
 export const Search = () => {
@@ -12,11 +10,13 @@ export const Search = () => {
         categories: [],
         category: "",
         search: "",
+        minPrice: "",
+        maxPrice: "",
         results: [],
         searched: false
     });
 
-    const {  category, search, results, searched } = data;
+    const {  category, search, results, searched,minPrice,maxPrice,page } = data;
 
     
 
@@ -26,7 +26,7 @@ export const Search = () => {
 
     const list = params => {
       console.log("query", params);
-      return fetch(`${API}/mercari/search?page=1&min_price=6000&max_price=20000&search=microsoft surface`, {
+      return fetch(`${API}/mercari/search?page=${page || 1}&min_price=${minPrice}&max_price=${maxPrice}&search=${search}`, {
           method: "GET"
       })
           .then(response => {
@@ -59,21 +59,12 @@ export const Search = () => {
         setData({ ...data, [name]: event.target.value, searched: false });
     };
 
-    const searchMessage = (searched, results) => {
-        if (searched && results.length > 0) {
-            return `Found ${results.length} products`;
-        }
-        if (searched && results.length < 1) {
-            return `No products found`;
-        }
-    };
+ 
 
     const searchedProducts = (results = []) => {
         return (
             <div>
-                <h2 className="mt-4 mb-4">
-                    {searchMessage(searched, results)}
-                </h2>
+               
 
                 <div className="row">
                     {results.map((product, i) => (
@@ -96,14 +87,41 @@ export const Search = () => {
                         onChange={handleChange("search")}
                         placeholder="Search by name"
                     />
+                   
                 </div>
+                
                 <div
                     className="btn input-group-append"
                     style={{ border: "none" }}
                 >
                     <button className="input-group-text">Search</button>
                 </div>
+                
             </span>
+            <span className="input-group-text">
+                <div className="input-group input-group-lg">
+                   
+                    <input
+                        type="number"
+                        className="form-control"
+                        onChange={handleChange("minPrice")}
+                        placeholder="minumum price"
+                    />
+                    <input
+                        type="number"
+                        className="form-control"
+                        onChange={handleChange("maxPrice")}
+                        placeholder="maximum price"
+                    />
+                     <input
+                        type="number"
+                        className="form-control"
+                        onChange={handleChange("page")}
+                        placeholder="page number"
+                    />
+                </div>         
+            </span>
+            
         </form>
     );
 
