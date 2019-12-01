@@ -3,3 +3,5 @@ TODO => change local storage to mongo DB
      => blurr pay button if pay is loading
 
      -redirect to 
+     -remove photo
+     -update cart button
