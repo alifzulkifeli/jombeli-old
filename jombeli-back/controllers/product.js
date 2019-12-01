@@ -19,19 +19,14 @@ exports.productById = (req, res, next, id) => {
 };
 
 exports.read = (req, res) => {
-    req.product.photo = undefined;//can be deleted after setup image cddn
     return res.json(req.product);
 };
 
 exports.create = (req, res) => {
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;
-    form.parse(req, (err, fields, files) => {
-        if (err) {
-            return res.status(400).json({
-                error: "Image could not be uploaded"
-            });
-        }
+    form.parse(req, (err, fields) => {
+       
         // check for all fields
         const {
             name,
@@ -59,19 +54,6 @@ exports.create = (req, res) => {
 
         let product = new Product(fields);
 
-        // 1kb = 1000
-        // 1mb = 1000000
-
-        if (files.photo) {
-            // console.log("FILES PHOTO: ", files.photo);
-            if (files.photo.size > 1000000) {
-                return res.status(400).json({
-                    error: "Image should be less than 1mb in size"
-                });
-            }
-            product.photo.data = fs.readFileSync(files.photo.path);
-            product.photo.contentType = files.photo.type;
-        }
 
         product.save((err, result) => {
             if (err) {
@@ -101,12 +83,8 @@ exports.remove = (req, res) => {
 exports.update = (req, res) => {
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;
-    form.parse(req, (err, fields, files) => {
-        if (err) {
-            return res.status(400).json({
-                error: "Image could not be uploaded"
-            });
-        }
+    form.parse(req, (err, fields) => {
+     
 
         let product = req.product;
         product = _.extend(product, fields);
@@ -114,16 +92,7 @@ exports.update = (req, res) => {
         // 1kb = 1000
         // 1mb = 1000000
 
-        if (files.photo) {
-            // console.log("FILES PHOTO: ", files.photo);
-            if (files.photo.size > 1000000) {
-                return res.status(400).json({
-                    error: "Image should be less than 1mb in size"
-                });
-            }
-            product.photo.data = fs.readFileSync(files.photo.path);
-            product.photo.contentType = files.photo.type;
-        }
+       
 
         product.save((err, result) => {
             if (err) {
@@ -149,7 +118,6 @@ exports.list = (req, res) => {
     let limit = req.query.limit ? parseInt(req.query.limit) : 15;
 
     Product.find()
-        .select("-photo")
         .populate("category")
         .sort([[sortBy, order]])
         .limit(limit)
@@ -229,7 +197,6 @@ exports.listBySearch = (req, res) => {
     }
 
     Product.find(findArgs)
-        .select("-photo")
         .populate("category")
         .sort([[sortBy, order]])
         .skip(skip)
@@ -247,13 +214,7 @@ exports.listBySearch = (req, res) => {
         });
 };
 
-exports.photo = (req, res, next) => {
-    if (req.product.photo.data) {
-        res.set("Content-Type", req.product.photo.contentType);
-        return res.send(req.product.photo.data);
-    }
-    next();
-};
+
 
 exports.listSearch = (req, res) => {
     // create query object to hold search value and category value
@@ -274,7 +235,7 @@ exports.listSearch = (req, res) => {
                 });
             }
             res.json(products);
-        }).select("-photo");
+        })
     }
 };
 

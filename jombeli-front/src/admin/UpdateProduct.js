@@ -30,6 +30,7 @@ const UpdateProduct = ({ match }) => {
         // categories,
         category,
         shipping,
+        image,
         quantity,
         loading,
         error,
@@ -49,6 +50,7 @@ const UpdateProduct = ({ match }) => {
                     name: data.name,
                     description: data.description,
                     price: data.price,
+                    image: data.image,
                     category: data.category._id,
                     shipping: data.shipping,
                     quantity: data.quantity,
@@ -95,6 +97,7 @@ const UpdateProduct = ({ match }) => {
                     description: '',
                     photo: '',
                     price: '',
+                    image:'',
                     quantity: '',
                     loading: false,
                     error: false,
@@ -107,11 +110,9 @@ const UpdateProduct = ({ match }) => {
 
     const newPostForm = () => (
         <form className="mb-3" onSubmit={clickSubmit}>
-            <h4>Post Photo</h4>
             <div className="form-group">
-                <label className="btn btn-secondary">
-                    <input onChange={handleChange('photo')} type="file" name="photo" accept="image/*" />
-                </label>
+                <label className="text-muted">Image</label>
+                <input onChange={handleChange('image')} type="text" className="form-control" value={image} />
             </div>
 
             <div className="form-group">
