@@ -42,7 +42,6 @@ exports.create = (req, res) => {
             !name ||
             !description ||
             !price ||
-            !image||
             !category ||
             !quantity ||
             !shipping

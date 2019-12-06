@@ -37,8 +37,23 @@ const productSchema = new mongoose.Schema({
     data: Buffer,
     contentType: String
   },
-  image: {
-    type: Array
+  image1: {
+    type: String
+  },
+  image2: {
+    type: String
+  },
+  image3: {
+    type: String
+  },
+  image4: {
+    type: String
+  },
+  image5: {
+    type: String
+  },
+  image6: {
+    type: String
   },
   shipping: {
     required: false,

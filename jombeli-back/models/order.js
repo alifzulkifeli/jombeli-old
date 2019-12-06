@@ -4,7 +4,7 @@ const { ObjectId } = mongoose.Schema;
 
 const CartItemSchema = new mongoose.Schema(
   {
-    product: { type: ObjectId, ref: "Product" },
+    // product: { type: ObjectId, ref: "Product" },
     name: String,
     price: Number,
     count: Number
@@ -24,6 +24,15 @@ const OrderSchema = new mongoose.Schema(
       type: String,
       default: "Not processed",
       enum: ["Not processed", "Processing", "Shipped", "Delivered", "Cancelled"] // enum means string objects
+    },
+    receiptName:{
+      type: String,
+      default: "none",
+      required: true
+    },
+    receiptData:{
+      type: String,
+      required: true
     },
     updated: Date,
     user: { type: ObjectId, ref: "User" }
