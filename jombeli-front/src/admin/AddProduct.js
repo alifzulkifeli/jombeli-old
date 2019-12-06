@@ -3,6 +3,7 @@ import Layout from '../core/Layout';
 import { isAuthenticated } from '../auth';
 import { Link } from 'react-router-dom';
 import { createProduct, getCategories } from './apiAdmin';
+import '../script'
 
 const AddProduct = () => {
     const [values, setValues] = useState({
@@ -13,7 +14,12 @@ const AddProduct = () => {
         category: '',
         shipping: '',
         quantity: '',
-        image: [],
+        image1:'',
+        image2:'',
+        image3:'',
+        image4:'',
+        image5:'',
+        image6:'',
         loading: false,
         error: '',
         createdProduct: '',
@@ -32,6 +38,12 @@ const AddProduct = () => {
         quantity,
         loading,
         image,
+        image1,
+        image2,
+        image3,
+        image4,
+        image5,
+        image6,
         error,
         createdProduct,
         redirectToProfile,
@@ -76,7 +88,12 @@ const AddProduct = () => {
                     name: '',
                     description: '',
                     photo: '',
-                    image: [],
+                    image1:'',
+                    image2:'',
+                    image3:'',
+                    image4:'',
+                    image5:'',
+                    image6:'',
                     price: '',
                     quantity: '',
                     loading: false,
@@ -89,10 +106,26 @@ const AddProduct = () => {
     const newPostForm = () => (
         <form className="mb-3" onSubmit={clickSubmit}>
           
-            <div className="form-group">
+          <div className="form-group">
                 <label className="text-muted">Image</label>
-                <input onChange={handleChange('image')} type="text" className="form-control" value={image} />
+                <input onChange={handleChange('image1')} type="text" className="form-control"  />
             </div>
+            <div className="form-group">
+                <input onChange={handleChange('image2')} type="text" className="form-control"  />
+            </div>
+            <div className="form-group">
+                <input onChange={handleChange('image3')} type="text" className="form-control"/>
+            </div>
+            <div className="form-group">
+                <input onChange={handleChange('image4')} type="text" className="form-control"/>
+            </div>
+            <div className="form-group">
+                <input onChange={handleChange('image5')} type="text" className="form-control"  />
+            </div>
+            <div className="form-group">
+                <input onChange={handleChange('image6')} type="text" className="form-control" />
+            </div>
+
             <div className="form-group">
                 <label className="text-muted">Name</label>
                 <input onChange={handleChange('name')} type="text" className="form-control" value={name} />

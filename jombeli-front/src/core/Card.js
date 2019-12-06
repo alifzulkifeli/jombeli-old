@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import ShowImage from './ShowImage';
 import moment from 'moment';
-import { addItem, updateItem, removeItem } from './cartHelpers';
+import { addItem, updateItem, removeItem, itemTotal } from './cartHelpers';
 
 const Card = ({
   product,
@@ -10,6 +10,7 @@ const Card = ({
   showAddToCartButton = true,
   cartUpdate = false,
   showRemoveProductButton = false,
+  showDetails = false,
   setRun = f => f,
   run = undefined
   // changeCartSize
@@ -29,10 +30,14 @@ const Card = ({
     }
     return (
       showViewProductButton && (
+      
+        <a href={product.link}>
+          <button className="btn btn-outline-primary  card-btn-1 mr-2">View Product</button>
+        </a>
         
-        <Link to={`/product/${product.link}`} className="mr-2">
-          <button className="btn btn-outline-primary mt-2 mb-2 card-btn-1">View Product</button>
-        </Link>
+        // <Link to={{pathname:product.link}} className="mr-2">
+        //   <button className="btn btn-outline-primary mt-2 mb-2 card-btn-1">View Product</button>
+        // </Link>
       )
     );
   };
@@ -50,7 +55,9 @@ const Card = ({
   const showAddToCartBtn = showAddToCartButton => {
     return (
       showAddToCartButton && (
-        <button onClick={addToCart} className="btn btn-outline-warning mt-2 mb-2 card-btn-1  ">
+        <button onClick={() => {
+          addToCart(); // run useEffect in parent Cart
+        }} className="btn btn-outline-warning mt-2 mb-2 card-btn-1  ">
           Add to cart
         </button>
       )
@@ -92,7 +99,10 @@ const Card = ({
       );
     }else{
       return(
-        <p>you cannot edit product quantity, learn here</p>
+        cartUpdate && (
+          <p>you cannot edit product quantity, learn here</p>
+        )
+        
       )
     }
     
@@ -109,6 +119,14 @@ const Card = ({
         >
           Remove Product
         </button>
+      )
+    );
+  };
+
+  const showDetail = showDetails => {
+    return (
+      showDetails && (
+        <p className="card-p black-10">{product.description}</p>
       )
     );
   };
@@ -132,7 +150,7 @@ const Card = ({
         {shouldRedirect(redirect)}
         <ShowImage item={product}/>
         {/* <p className="card-p  mt-2">{product.description.substring(0, 100)} </p> */}
-        <p className="card-p black-10">$ {product.price}</p>
+        <p className="card-p black-10">RM {product.price}</p>
         {showCategory()}
         
         
@@ -143,12 +161,85 @@ const Card = ({
 
         {showAddToCartBtn(showAddToCartButton)}
 
+        {showDetail(showDetails)}
+        
         {showRemoveButton(showRemoveProductButton)}
 
         {showCartUpdateOptions(cartUpdate)}
+
       </div>
     </div>
   );
 };
 
 export default Card;
+
+
+
+
+
+
+
+
+// const buy = () => {
+//   setData({ loading: true });
+
+//   $('.btn-afterblur').attr("disabled", true);
+//   const enableBlur =  () => {
+//       $('.btn-afterblur').attr("disabled", false);
+//   }
+//   setTimeout(enableBlur, 5000);
+//   let nonce;
+//   let getNonce = data.instance
+//       .requestPaymentMethod()
+//       .then(data => {
+//           nonce = data.nonce;
+//           const paymentData = {
+//               paymentMethodNonce: nonce,
+//               amount: getTotal(products)
+//           };
+
+//           processPayment(userId, token, paymentData)
+//               .then(response => {
+//                   console.log(response);
+//                   // empty cart
+//                   // create order
+
+//                   const createOrderData = {
+//                       products: products,
+//                       transaction_id: response.transaction.id,
+//                       amount: response.transaction.amount,
+//                       address: deliveryAddress,
+//                       receiptName: receiptNameData,
+//                       receiptData:receiptDataData
+//                   };
+
+//                   createOrder(userId, token, createOrderData)
+//                       .then(response => {
+//                           emptyCart(() => {
+//                               setRun(!run); // run useEffect in parent Cart
+//                               console.log('payment success and empty cart');
+//                               setData({
+//                                   loading: false,
+//                                   success: true,
+//                                   paid: true
+//                               });
+//                           });
+//                       })
+//                       .catch(error => {
+//                           console.log(error);
+//                           setData({ loading: false ,paid: true});
+//                       });
+//               })
+//               .catch(error => {
+//                   console.log(error);
+//                   setData({ loading: false ,paid: true});
+//               });
+//       })
+//       .catch(error => {
+//           // console.log("dropin error: ", error);
+//           setData({ ...data, error: error.message });
+          
+          
+//       });
+// };

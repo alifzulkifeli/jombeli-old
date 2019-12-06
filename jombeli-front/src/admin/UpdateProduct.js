@@ -4,6 +4,7 @@ import { isAuthenticated } from '../auth';
 import { Link, Redirect } from 'react-router-dom';
 import { getProduct, getCategories, updateProduct } from './apiAdmin';
 
+
 const UpdateProduct = ({ match }) => {
     const [values, setValues] = useState({
         name: '',
@@ -13,7 +14,12 @@ const UpdateProduct = ({ match }) => {
         category: '',
         shipping: '',
         quantity: '',
-        photo: '',
+        image1:'',
+        image2:'',
+        image3:'',
+        image4:'',
+        image5:'',
+        image6:'',
         loading: false,
         error: false,
         createdProduct: '',
@@ -30,7 +36,12 @@ const UpdateProduct = ({ match }) => {
         // categories,
         category,
         shipping,
-        image,
+        image1,
+        image2,
+        image3,
+        image4,
+        image5,
+        image6,
         quantity,
         loading,
         error,
@@ -50,7 +61,12 @@ const UpdateProduct = ({ match }) => {
                     name: data.name,
                     description: data.description,
                     price: data.price,
-                    image: data.image,
+                    image1: data.image1,
+                    image2: data.image2,
+                    image3: data.image3,
+                    image4: data.image4,
+                    image5: data.image5,
+                    image6: data.image6,
                     category: data.category._id,
                     shipping: data.shipping,
                     quantity: data.quantity,
@@ -78,7 +94,7 @@ const UpdateProduct = ({ match }) => {
     }, []);
 
     const handleChange = name => event => {
-        const value = name === 'photo' ? event.target.files[0] : event.target.value;
+        const value = event.target.value;
         formData.set(name, value);
         setValues({ ...values, [name]: value });
     };
@@ -91,13 +107,20 @@ const UpdateProduct = ({ match }) => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
+                console.log(data);
+                
                 setValues({
                     ...values,
                     name: '',
                     description: '',
                     photo: '',
                     price: '',
-                    image:'',
+                    image1:'',
+                    image2:'',
+                    image3:'',
+                    image4:'',
+                    image5:'',
+                    image6:'',
                     quantity: '',
                     loading: false,
                     error: false,
@@ -108,12 +131,32 @@ const UpdateProduct = ({ match }) => {
         });
     };
 
+
+    
     const newPostForm = () => (
         <form className="mb-3" onSubmit={clickSubmit}>
+
             <div className="form-group">
                 <label className="text-muted">Image</label>
-                <input onChange={handleChange('image')} type="text" className="form-control" value={image} />
+                <input onChange={handleChange('image1')} type="text" className="form-control" value={image1} />
             </div>
+            <div className="form-group">
+                <input onChange={handleChange('image2')} type="text" className="form-control" value={image2} />
+            </div>
+            <div className="form-group">
+                <input onChange={handleChange('image3')} type="text" className="form-control" value={image3} />
+            </div>
+            <div className="form-group">
+                <input onChange={handleChange('image4')} type="text" className="form-control" value={image4} />
+            </div>
+            <div className="form-group">
+                <input onChange={handleChange('image5')} type="text" className="form-control" value={image5} />
+            </div>
+            <div className="form-group">
+                <input onChange={handleChange('image6')} type="text" className="form-control" value={image6} />
+            </div>
+          
+
 
             <div className="form-group">
                 <label className="text-muted">Name</label>

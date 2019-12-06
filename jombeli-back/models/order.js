@@ -27,12 +27,11 @@ const OrderSchema = new mongoose.Schema(
     },
     receiptName:{
       type: String,
-      default: "none",
-      required: true
+
     },
     receiptData:{
-      type: String,
-      required: true
+      type: String
+
     },
     updated: Date,
     user: { type: ObjectId, ref: "User" }

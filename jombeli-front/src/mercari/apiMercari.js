@@ -1,6 +1,5 @@
 import { API } from "../config";
 import React, { useState, useEffect } from "react";
-import { Link, Redirect } from 'react-router-dom';
 import Card from '../core/Card';
 
 
@@ -36,7 +35,7 @@ export const M_Search = () => {
     };
 
     const searchData = () => {
-        // console.log(search, category);
+        console.log(search, category);
         if (search) {
             list({ search: search || undefined, category: category }).then(
                 response => {
@@ -57,6 +56,8 @@ export const M_Search = () => {
 
     const handleChange = name => event => {
         setData({ ...data, [name]: event.target.value, searched: false });
+        
+        
     };
 
  
@@ -69,7 +70,7 @@ export const M_Search = () => {
                 <div className="row">
                     {results.map((product, i) => (
                         <div className="col-4 mb-3">
-                            <Card key={i} product={product} />
+                            <Card key={i} product={product} cartUpdate={false}/>
                         </div>
                     ))}
                 </div>
@@ -86,6 +87,7 @@ export const M_Search = () => {
                         className="form-control"
                         onChange={handleChange("search")}
                         placeholder="Search by name"
+                        value={data.search}
                     />
                    
                 </div>

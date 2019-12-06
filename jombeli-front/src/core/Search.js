@@ -101,6 +101,8 @@ const Search = () => {
                         className="form-control"
                         onChange={handleChange("search")}
                         placeholder="Search by name"
+                        autoComplete="on"
+                        name="product-search"
                     />
                 </div>
                 <div

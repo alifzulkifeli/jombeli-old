@@ -36,7 +36,7 @@ const Menu = ({ history }) => (
             <li className="nav-item">
                 <Link
                     className="nav-link"
-                    style={isActive(history, "/shop")}
+                    style={isActive(history, "/mercari")}
                     to="/mercari"
                 >
                     Mercari
