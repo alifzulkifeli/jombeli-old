@@ -43,6 +43,8 @@ export const createProduct = (userId, token, product) => {
             Authorization: `Bearer ${token}`
         },
         body: product
+        
+        
     })
         .then(response => {
             return response.json();

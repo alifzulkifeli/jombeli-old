@@ -58,23 +58,23 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
         console.log(data.transfer);
     };
     
-    const handlePhoto = event => {
-        console.log(event.target.files[0]);
-        const test = URL.createObjectURL(event.target.files[0]);
-        image2base64(test) // you can also to use url
-            .then(
-                (response) => {
-                    setData({ ...data, receiptData: response  });
-                }
-            )
-            .catch(
-                (error) => {
-                    console.log(error); 
-                }
-            )
- 
-        
-    };
+
+    const handlePhoto = async e => {
+        const files = e.target.files;
+        const data = new FormData()
+        data.append('file', files[0])
+        data.append('upload_preset', 'jombeli-receipt')
+        const res = await fetch(
+            'https://api.cloudinary.com/v1_1/drzyjnnsq/image/upload', {
+                method: 'POST',
+                body: data 
+            }
+        )
+
+        const file = await res.json()
+        setData({ ...data, receiptData: file.secure_url  }); 
+    }
+
     
     const testHandler1 = () => {
         setTest(false)
@@ -248,8 +248,9 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
 <form>
 <div className="form-group">
   <label className="btn btn-secondary">
-  <input type="file" type="file" onChange={handlePhoto} accept="image/*"/>
+  <input type="file" onChange={handlePhoto} accept="image/*"/>
   </label>
+  <img src={data.receiptData} className="img-thumbnail rounded" alt=""/>
 </div>
 </form>
 </div>

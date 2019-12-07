@@ -4,6 +4,7 @@ import { isAuthenticated } from '../auth';
 import { Link } from 'react-router-dom';
 import { createProduct, getCategories } from './apiAdmin';
 import '../script'
+import { log } from 'util';
 
 const AddProduct = () => {
     const [values, setValues] = useState({
@@ -13,19 +14,26 @@ const AddProduct = () => {
         categories: [],
         category: '',
         shipping: '',
-        quantity: '',
-        image1:'',
-        image2:'',
-        image3:'',
-        image4:'',
-        image5:'',
-        image6:'',
+        images:'',
+        quantity: '',     
         loading: false,
         error: '',
         createdProduct: '',
         redirectToProfile: false,
         formData: ''
     });
+
+    const [image, setImage] = useState({
+        image1:'',
+        image2:'',
+        image3:'',
+        image4:'',
+        image5:'',
+        image6:''
+        },   
+    )
+
+    
 
     const { user, token } = isAuthenticated();
     const {
@@ -35,20 +43,22 @@ const AddProduct = () => {
         categories,
         category,
         shipping,
+        images,
         quantity,
         loading,
-        image,
-        image1,
-        image2,
-        image3,
-        image4,
-        image5,
-        image6,
         error,
         createdProduct,
         redirectToProfile,
         formData
     } = values;
+    const {
+        image1,
+        image2,
+        image3,
+        image4,
+        image5,
+        image6
+    } = image;
 
     // load categories and set form data
     const init = () => {
@@ -70,16 +80,29 @@ const AddProduct = () => {
     }, []);
 
     const handleChange = name => event => {
-        const value = name === 'photo' ? event.target.files[0] : event.target.value;
+        const value = event.target.value;
         formData.set(name, value);
         setValues({ ...values, [name]: value });
     };
 
     const clickSubmit = event => {
         event.preventDefault();
+        formData.append('image1', image1);
+        formData.append('image2', image2);
+        formData.append('image3', image3);
+        formData.append('image4', image4);
+        formData.append('image5', image5);
+        formData.append('image6', image6);
         setValues({ ...values, error: '', loading: true });
-
+        console.log(values);
+        
+        
         createProduct(user._id, token, formData).then(data => {
+ 
+            for (var pair of formData.entries()) {
+                console.log(pair[0]+ ', ' + pair[1]); 
+            }
+            
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
@@ -88,43 +111,114 @@ const AddProduct = () => {
                     name: '',
                     description: '',
                     photo: '',
-                    image1:'',
-                    image2:'',
-                    image3:'',
-                    image4:'',
-                    image5:'',
-                    image6:'',
                     price: '',
                     quantity: '',
                     loading: false,
                     createdProduct: data.name
                 });
+
+                setImage({
+                        image1:'',
+                        image2:'',
+                        image3:'',
+                        image4:'',
+                        image5:'',
+                        image6:''
+                    }
+                )
             }
         });
     };
 
+    const uploadImage = name => async e => {
+        const files = e.target.files;
+        const data = new FormData()
+        data.append('file', files[0])
+        data.append('upload_preset', 'jombeli')
+        
+        
+        const res = await fetch(
+            'https://api.cloudinary.com/v1_1/drzyjnnsq/image/upload', {
+                method: 'POST',
+                body: data 
+            }
+        )
+        
+        const file = await res.json()
+        setImage({...image, [name]: file.secure_url})  
+        
+    }
+
+     const handleImageDelete = (e) => {
+        setValues({[e.target.value]: ""})   
+     }
+
+
+    const imageInput = () => {
+        return(
+            
+            <div>
+            <div className="form-group">
+                
+            <label className="text-muted">Image</label>
+            {image1 ? (<div><img src={image1} className="img-thumbnail rounded img form" alt=""/><button className='button button-danger' value="image1" onClick={handleImageDelete}>delete</button></div>) : 
+            (
+            <div><input onChange={uploadImage('image1')} type="file" className="form-control-file" multiple/>
+            </div>
+            )}
+        </div>
+        <div className="form-group">
+            
+            {image2 ? (<div><img src={image2} className="img-thumbnail rounded img form" alt=""/><button className='button button-danger' value="image2" onClick={handleImageDelete}>delete</button></div>) : 
+            (
+            <div><input onChange={uploadImage('image2')} type="file" className="form-control-file" multiple/>
+            </div>
+            )}
+        </div>
+        <div className="form-group">
+            
+            {image3 ? (<div><img src={image3} className="img-thumbnail rounded img form" alt=""/><button className='button button-danger' value="image3" onClick={handleImageDelete}>delete</button></div>) : 
+            (
+            <div><input onChange={uploadImage('image3')} type="file" className="form-control-file" multiple/>
+            </div>
+            )}
+        </div>
+        
+        <div className="form-group">
+            
+            {image4 ? (<div><img src={image4} className="img-thumbnail rounded img form" alt=""/><button className='button button-danger' value="image4" onClick={handleImageDelete}>delete</button></div>) : 
+            (
+            <div><input onChange={uploadImage('image4')} type="file" className="form-control-file" multiple/>
+            </div>
+            )}
+        </div>
+        <div className="form-group">
+            
+            {image5 ? (<div><img src={image5} className="img-thumbnail rounded img form" alt=""/><button className='button button-danger' value="image5" onClick={handleImageDelete}>delete</button></div>) : 
+            (
+            <div><input onChange={uploadImage('image5')} type="file" className="form-control-file" multiple/>
+            </div>
+            )}
+        </div>
+        <div className="form-group">
+            
+            {image6 ? (<div><img src={image6} className="img-thumbnail rounded img form" alt=""/><button className='button button-danger' value="image6" onClick={handleImageDelete}>delete</button></div>) : 
+            (
+            <div><input onChange={uploadImage('image6')} type="file" className="form-control-file" multiple/>
+            </div>
+            )}
+        </div>
+        </div>
+        )
+    }
+
+
     const newPostForm = () => (
         <form className="mb-3" onSubmit={clickSubmit}>
-          
-          <div className="form-group">
-                <label className="text-muted">Image</label>
-                <input onChange={handleChange('image1')} type="text" className="form-control"  />
-            </div>
-            <div className="form-group">
-                <input onChange={handleChange('image2')} type="text" className="form-control"  />
-            </div>
-            <div className="form-group">
-                <input onChange={handleChange('image3')} type="text" className="form-control"/>
-            </div>
-            <div className="form-group">
-                <input onChange={handleChange('image4')} type="text" className="form-control"/>
-            </div>
-            <div className="form-group">
-                <input onChange={handleChange('image5')} type="text" className="form-control"  />
-            </div>
-            <div className="form-group">
-                <input onChange={handleChange('image6')} type="text" className="form-control" />
-            </div>
+
+         
+          {imageInput()}
+      
 
             <div className="form-group">
                 <label className="text-muted">Name</label>

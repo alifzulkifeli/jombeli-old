@@ -23,7 +23,7 @@ const app = express();
 
 //middlewares
 app.use(morgan('dev'));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '10mb', extended: true}));
 app.use(cookieParser());
 app.use(expressValidator());
 app.use(cors());
